@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - '**'
 jobs:
   tag:
     runs-on: ubuntu-latest
@@ -23,8 +21,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           latest_tag=$(/bin/echo -n "${{ steps.get_latest_tag.outputs.latest_tag }}")
-          tag_version=${latest_tag##*.}
-          next_tag_version=$((tag_version+1))
-          new_tag="v1.0.${next_tag_version}"
+          if [[ -z $latest_tag ]]; then
+            new_tag="v1.0.0"
+          else
+            tag_version=$(git diff --name-only $latest_tag | awk -F'/' '{print $1}' | sort -u | wc -l)
+            next_tag_version=$((tag_version+1))
+            new_tag="v1.0.${next_tag_version}"
+          fi
           git tag -a $new_tag -m "Version $new_tag"
           git push --follow-tags
