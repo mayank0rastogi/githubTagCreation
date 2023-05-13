@@ -21,6 +21,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           tag_version=$(echo ${{ steps.get_tag_version.outputs.tag_version }})
-          tag_version=$(echo $tag_version | awk -F. '{$NF = $NF + 1;} 1' OFS=.)
-          git tag -a $tag_version -m "Version $tag_version"
+          tag_version=$(echo $"v${tag_version}" | awk -F. '{$NF = $NF + 1;} 1' OFS=.)
+          git tag -a "v${tag_version}" -m "Version "v${tag_version}""
           git push --follow-tags
