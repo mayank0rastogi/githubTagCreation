@@ -9,6 +9,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Set committer identity
+        run: |
+          git config --global user.email "500069069@stu.upes.ac.in"
+          git config --global user.name "Mayank Rastogi"
       - name: Create Tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
