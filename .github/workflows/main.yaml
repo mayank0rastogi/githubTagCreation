@@ -1,7 +1,8 @@
-name: Create Tag on Release
+name: Create Tag on Push
 on:
-  release:
-    types: [edited]
+  push:
+    branches:
+      - main
 jobs:
   tag:
     runs-on: ubuntu-latest
@@ -12,5 +13,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git tag -a ${{ github.ref }} -m "Automated tag creation"
+          git tag -a v1.0.0 -m "Version 1.0.0"
           git push --follow-tags
